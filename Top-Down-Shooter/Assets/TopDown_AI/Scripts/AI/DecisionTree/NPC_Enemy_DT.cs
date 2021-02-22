@@ -57,18 +57,21 @@ public class NPC_Enemy_DT : MonoBehaviour
         {
 			//TODO: YOUR CODE HERE (Q2)
 		}
-		if(dt_NewAction != dt_LastAction)
-        {
-			if(dt_LastAction != null)
-            {
-				dt_LastAction.end();
-            }
-			dt_NewAction.init();
-        }
-		else
-        {
-			dt_NewAction.update();
-        }
+		if (dt_NewAction != null)
+		{
+			if (dt_NewAction != dt_LastAction)
+			{
+				if (dt_LastAction != null)
+				{
+					dt_LastAction.end();
+				}
+				dt_NewAction.init();
+			}
+			else
+			{
+				dt_NewAction.update();
+			}
+		}
 		dt_LastAction = dt_NewAction;
 
 		canHearPlayer = false;
