@@ -30,6 +30,9 @@ public class NPC_Enemy_DT : MonoBehaviour
 
 	bool inAttackRange = false;
 
+	bool canHearPlayer = false;
+	bool useHardcodedDT = false;  //TODO: YOUR CODE HERE (Q2) - Simply change this to true!
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -45,7 +48,15 @@ public class NPC_Enemy_DT : MonoBehaviour
     {
 		npcAnimator.SetFloat(hashSpeed, navMeshAgent.velocity.magnitude);
 
-		DT_Action dt_NewAction = dtNode_Root.MakeDecision() as DT_Action;
+		DT_Action dt_NewAction = null;
+		if (!useHardcodedDT)
+		{
+			dt_NewAction = dtNode_Root.MakeDecision() as DT_Action;
+		}
+		else
+        {
+			//TODO: YOUR CODE HERE (Q2)
+		}
 		if(dt_NewAction != dt_LastAction)
         {
 			if(dt_LastAction != null)
@@ -59,6 +70,8 @@ public class NPC_Enemy_DT : MonoBehaviour
 			dt_NewAction.update();
         }
 		dt_LastAction = dt_NewAction;
+
+		canHearPlayer = false;
 	}
 
 	void BuildDecisionTree()
@@ -67,6 +80,7 @@ public class NPC_Enemy_DT : MonoBehaviour
 		DT_Action inspect = new DT_Action(ActionInit_Inspect, ActionUpdate_Inspect, ActionEnd_Inspect);
 		DT_Action attack = new DT_Action(ActionInit_Attack, ActionUpdate_Attack, ActionEnd_Attack);
 
+		//TODO: YOUR CODE HERE (Q1)
 		DT_Decision dtNode_InAttackRange = new DT_Decision(IsInAttackRange, attack, inspect);
 		dtNode_Root = new DT_Decision(CanSeePlayer, dtNode_InAttackRange, idle);
 
@@ -87,6 +101,11 @@ public class NPC_Enemy_DT : MonoBehaviour
 			}
 		}
 		return false;
+	}
+
+	bool CanHearPlayer()
+    {
+		return canHearPlayer;
 	}
 
 	bool IsInAttackRange()
@@ -180,6 +199,7 @@ public class NPC_Enemy_DT : MonoBehaviour
 	public void SetAlertPos(Vector3 newPos)
 	{
 		targetPos = newPos;
+		canHearPlayer = true;
 	}
 
 	public void Damage()
