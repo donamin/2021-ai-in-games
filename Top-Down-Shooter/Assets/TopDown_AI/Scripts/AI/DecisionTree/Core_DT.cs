@@ -6,9 +6,11 @@
 
 public class DT_Action : DT_Node
 {
-    public DT_Action_Init init, update, end;
+    public DT_Action_Init init;
+    public DT_Action_Update update;
+    public DT_Action_End end;
 
-    public DT_Action(DT_Action_Init init, DT_Action_Init update, DT_Action_Init end)
+    public DT_Action(DT_Action_Init init, DT_Action_Update update, DT_Action_End end)
     {
         this.init = init;
         this.update = update;
