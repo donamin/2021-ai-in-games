@@ -74,7 +74,7 @@ public class NPC_Enemy_DT : MonoBehaviour
 		}
 		dt_LastAction = dt_NewAction;
 
-		canHearPlayer = false;
+		//canHearPlayer = false;
 	}
 
 	void BuildDecisionTree()
