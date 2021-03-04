@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 
-public class Trigger_LoadScene : MonoBehaviour {
-	public string sceneName;
+public class Trigger_LoadScene : MonoBehaviour
+{
 	// Use this for initialization
-	void Start () {
-	
+	void Start()
+	{
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-	
+	void Update()
+	{
 	}
-	void OnTriggerEnter(Collider user){
-		if (user.tag == "Player") {
-			Application.LoadLevel(sceneName);
+
+	void OnTriggerEnter(Collider user)
+	{
+		if (user.tag == "Player")
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 	}
 }

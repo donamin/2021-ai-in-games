@@ -102,7 +102,12 @@ public class PlayerBehavior : MonoBehaviour {
 		RaycastHit[] hits=Physics.SphereCastAll (hitTestPivot.position,20.0f, hitTestPivot.up);
 		foreach (RaycastHit hit in hits) {
 			if (hit.collider != null && hit.collider.tag == "Enemy") {
-				hit.collider.GetComponent<NPC_Enemy_DT>().SetAlertPos(transform.position);
+				NPC_Enemy_DT dt = hit.collider.gameObject.GetComponent<NPC_Enemy_DT>();
+				if (dt != null)
+					dt.SetAlertPos(transform.position);
+				NPC_Enemy_FSM fsm = hit.collider.gameObject.GetComponent<NPC_Enemy_FSM>();
+				if (fsm != null)
+					fsm.SetAlertPos(transform.position);
 			}
 		}
 	}

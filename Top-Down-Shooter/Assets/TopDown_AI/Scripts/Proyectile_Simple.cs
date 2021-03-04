@@ -32,7 +32,12 @@ public class Proyectile_Simple : MonoBehaviour
 		}
 		else if (collisionTarget == CollisionTarget.ENEMIES && collision.gameObject.tag == "Enemy")
 		{
-			collision.gameObject.GetComponent<NPC_Enemy_DT>().Damage();
+			NPC_Enemy_DT dt = collision.gameObject.GetComponent<NPC_Enemy_DT>();
+			if(dt != null)
+				dt.Damage();
+			NPC_Enemy_FSM fsm = collision.gameObject.GetComponent<NPC_Enemy_FSM>();
+			if (fsm != null)
+				fsm.Damage();
 		}
 		else if (collision.gameObject.tag == "Finish")
 		{ //This is to detect if the proyectile collides with the world, i used this tag because it is standard in Unity (To prevent asset importing issues)
