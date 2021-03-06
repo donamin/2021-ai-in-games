@@ -33,6 +33,8 @@ public class NPC_Enemy_DT : MonoBehaviour
 	bool canHearPlayer = false;
 	bool useHardcodedDT = false;  //TODO: YOUR CODE HERE (Q2) - Simply change this to true!
 
+	DT_Action idle = null, inspect = null, attack = null;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -55,7 +57,7 @@ public class NPC_Enemy_DT : MonoBehaviour
 		}
 		else
         {
-			//TODO: YOUR CODE HERE (Q2)
+            //TODO: YOUR CODE HERE (Q2)
 		}
 		if (dt_NewAction != null)
 		{
@@ -78,10 +80,10 @@ public class NPC_Enemy_DT : MonoBehaviour
 	}
 
 	void BuildDecisionTree()
-    {
-		DT_Action idle = new DT_Action(ActionInit_Idle, ActionUpdate_Idle, ActionEnd_Idle);
-		DT_Action inspect = new DT_Action(ActionInit_Inspect, ActionUpdate_Inspect, ActionEnd_Inspect);
-		DT_Action attack = new DT_Action(ActionInit_Attack, ActionUpdate_Attack, ActionEnd_Attack);
+	{
+		idle = new DT_Action(ActionInit_Idle, ActionUpdate_Idle, ActionEnd_Idle);
+		inspect = new DT_Action(ActionInit_Inspect, ActionUpdate_Inspect, ActionEnd_Inspect);
+		attack = new DT_Action(ActionInit_Attack, ActionUpdate_Attack, ActionEnd_Attack);
 
 		//TODO: YOUR CODE HERE (Q1)
 		DT_Decision dtNode_InAttackRange = new DT_Decision(IsInAttackRange, attack, inspect);
