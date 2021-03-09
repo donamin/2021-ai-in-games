@@ -28,6 +28,8 @@ public class NPC_Enemy_FSM : MonoBehaviour
 
 	bool canHearPlayer = false;
 
+	static NPC_Enemy_FSM rifleSolider = null, shotgunSolider = null;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -63,11 +65,11 @@ public class NPC_Enemy_FSM : MonoBehaviour
 	}
 
 	void GoToState(NPC_EnemyAction newState)
-    {
-		if(currentAction != NPC_EnemyAction.NONE)
-        {
-            switch (currentAction)
-            {
+	{
+		if (currentAction != NPC_EnemyAction.NONE)
+		{
+			switch (currentAction)
+			{
 				case NPC_EnemyAction.IDLE:
 					ActionEnd_Idle();
 					break;
@@ -81,7 +83,7 @@ public class NPC_Enemy_FSM : MonoBehaviour
 					ActionEnd_Attack();
 					break;
 			}
-        }
+		}
 		currentAction = newState;
 		switch (currentAction)
 		{
@@ -98,6 +100,40 @@ public class NPC_Enemy_FSM : MonoBehaviour
 				ActionInit_Attack();
 				break;
 		}
+	}
+
+	public string GetStateText()
+	{
+		string res = "";
+		switch (currentAction)
+		{
+			case NPC_EnemyAction.IDLE:
+				res = "IDLE";
+				break;
+			case NPC_EnemyAction.INSPECT:
+				res = "INSPECT";
+				break;
+			case NPC_EnemyAction.PATROL:
+				res = "PATROL";
+				break;
+			case NPC_EnemyAction.ATTACK:
+				res = "ATTACK";
+				break;
+		}
+		res += ", ";
+		switch (weaponType)
+		{
+			case NPC_WeaponType.KNIFE:
+				res += "KNIFE";
+				break;
+			case NPC_WeaponType.RIFLE:
+				res += "RIFLE";
+				break;
+			case NPC_WeaponType.SHOTGUN:
+				res += "SHOTGUN";
+				break;
+		}
+		return res;
 	}
 
 	bool CanSeePlayer()
@@ -123,6 +159,7 @@ public class NPC_Enemy_FSM : MonoBehaviour
 
 	void SetWeapon(NPC_WeaponType newWeapon)
 	{
+		weaponType = newWeapon;
 		npcAnimator.SetTrigger("WeaponChange");
 		npcAnimator.SetInteger("WeaponType", (int)weaponType);
 		switch (weaponType)
@@ -138,7 +175,7 @@ public class NPC_Enemy_FSM : MonoBehaviour
 				weaponTime = 0.05f;
 				break;
 			case NPC_WeaponType.SHOTGUN:
-				weaponRange = 20.0f;
+				weaponRange = 10.0f;
 				weaponActionTime = 0.35f;
 				weaponTime = 0.75f;
 				break;
@@ -207,6 +244,8 @@ public class NPC_Enemy_FSM : MonoBehaviour
 
 	public void Damage()
 	{
+		//TODO: YOUR CODE HERE (Q1): A soldier has been killed. Update the static variables (rifleSolider & shotgunSolider) accordingly.
+		
 		navMeshAgent.velocity = Vector3.zero;
 		//navMeshAgent.Stop ();
 		npcAnimator.SetBool("Dead", true);
@@ -219,22 +258,41 @@ public class NPC_Enemy_FSM : MonoBehaviour
 		Destroy(gameObject);
 	}
 
+	void AssignWeapons()
+	{
+		//TODO: YOUR CODE HERE (Q1): Set the weapon type using the static variables (rifleSolider & shotgunSolider).
+		//Remember to update the static variables accordingly!
+	}
+
 	////////////////////////////// Action: IDLE //////////////////////////////
 	void ActionInit_Idle()
 	{
 		navMeshAgent.SetDestination(startingPos);
 		navMeshAgent.isStopped = false;
+		//Q1: The player has been lost or killed. The static variables (rifleSolider & shotgunSolider) are now updated.
+		if (rifleSolider == this)
+		{
+			rifleSolider = null;
+		}
+		else if (shotgunSolider == this)
+		{
+			shotgunSolider = null;
+		}
 	}
 
 	void ActionUpdate_Idle()
 	{
-		if(CanSeePlayer() || CanHearPlayer())
-        {
+		//Q1: The last two conditions check if there is a rifle attacking solider or a shotgun attacking solider in the team!
+		if (CanSeePlayer() || CanHearPlayer() || rifleSolider != null || shotgunSolider != null)
+		{
 			GoToState(NPC_EnemyAction.INSPECT);
-        }
+		}
 	}
 
-	void ActionEnd_Idle() { }
+	void ActionEnd_Idle()
+	{
+		AssignWeapons();
+	}
 	//////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////// Action: INSPECT /////////////////////////////
@@ -248,6 +306,7 @@ public class NPC_Enemy_FSM : MonoBehaviour
 		inspectTimer.StopTimer();
 		inspectWait = false;
 	}
+
 	void ActionUpdate_Inspect()
 	{
 		if (HasReachedMyDestination() && !inspectWait)
@@ -257,12 +316,17 @@ public class NPC_Enemy_FSM : MonoBehaviour
 			inspectTurnTimer.StartTimer(1.0f);
 		}
 		navMeshAgent.SetDestination(targetPos);
+
 		RaycastHit hit;
 		Physics.Raycast(transform.position, transform.forward, out hit, weaponRange, hitTestLayer);
 
 		if (hit.collider != null && hit.collider.tag == "Player")
 		{
 			GoToState(NPC_EnemyAction.ATTACK);
+		}
+		else if (CanSeePlayer())
+		{
+			transform.forward = targetPos - transform.position;
 		}
 		else if (inspectWait)
 		{
@@ -274,10 +338,14 @@ public class NPC_Enemy_FSM : MonoBehaviour
 				inspectTurnTimer.StartTimer(Random.Range(0.5f, 1.25f));
 			}
 			if (inspectTimer.IsFinished())
+			{
 				GoToState(NPC_EnemyAction.IDLE);
+			}
 		}
 	}
-	void ActionEnd_Inspect() { }
+	void ActionEnd_Inspect()
+	{
+	}
 	//////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////// Action: ATTACK /////////////////////////////
@@ -306,6 +374,7 @@ public class NPC_Enemy_FSM : MonoBehaviour
 	void ActionEnd_Attack()
 	{
 		npcAnimator.SetBool("Attack", false);
+		AssignWeapons();
 	}
 	//////////////////////////////////////////////////////////////////////////
 
