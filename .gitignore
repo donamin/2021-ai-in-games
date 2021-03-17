@@ -10,6 +10,14 @@ Top-Down-Shooter/[Bb]uilds/
 Top-Down-Shooter/[Ll]ogs/
 Top-Down-Shooter/[Uu]ser[Ss]ettings/
 
+Pathfinding/[Ll]ibrary/
+Pathfinding/[Tt]emp/
+Pathfinding/[Oo]bj/
+Pathfinding/[Bb]uild/
+Pathfinding/[Bb]uilds/
+Pathfinding/[Ll]ogs/
+Pathfinding/[Uu]ser[Ss]ettings/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 Top-Down-Shooter/[Mm]emoryCaptures/
