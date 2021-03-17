@@ -58,11 +58,6 @@ public class Dijkstra : MonoBehaviour
         connections.Add(new Connection(8, 6));
         connections.Add(new Connection(9, 4));
 
-        foreach (Connection con in connections)
-        {
-            con.cost = Vector3.Distance(nodes[con.from].transform.position, nodes[con.to].transform.position);
-        }
-
         NodeRecord startRecord;
         startRecord.node = startNode;
         startRecord.connection = -1;
@@ -70,6 +65,11 @@ public class Dijkstra : MonoBehaviour
         openList.Add(startRecord);
 
         currentNode.node = -1;
+
+        foreach (Connection conn in connections)
+        {
+            conn.cost = Vector3.Distance(nodes[conn.from].transform.position, nodes[conn.to].transform.position);
+        }
     }
 
     // Update is called once per frame
@@ -78,53 +78,50 @@ public class Dijkstra : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             //Run one Dijkstra iteration
-            if (!foundPath && openList.Count > 0)
+            if(!foundPath && openList.Count > 0)
             {
                 iteration++;
                 pathfindingStatus = "In progress...";
-                currentNode = GetSmallestOpenNode();
+                currentNode = FindSmallestOpenNode();
                 if (currentNode.node == goalNode)
                 {
-                    //We have found the goal node, so we should terminate.
-                    //ToDo
+                    //We have found the goal, so we should terminate.
                 }
                 else
                 {
-                    List<int> connectionsIDs = GetConnections(currentNode.node);
-                    foreach(int id in connectionsIDs)
+                    List<int> connectionIDs = GetConnections(currentNode.node);
+                    foreach(int id in connectionIDs)
                     {
                         int endNode = connections[id].to;
-                        NodeRecord endNodeRecord;
-                        //Skip if the node is closed.
                         if (Contains(closedList, endNode) != -1)
                             continue;
+                        NodeRecord endNodeRecord;
                         float endNodeCost = currentNode.costSoFar + connections[id].cost;
                         int indexInOpenList = Contains(openList, endNode);
                         if (indexInOpenList > -1)
                         {
-                            //endNode is in the open list, so we must make sure that the new found route is better than than the previous one.
+                            //Make sure that the new found route is better than the previous one
                             endNodeRecord = openList[indexInOpenList];
                             if (endNodeRecord.costSoFar <= endNodeCost)
                             {
-                                //The new route is worse.
                                 continue;
                             }
                         }
                         else
                         {
-                            //We've got an unvisited node, so make a record for it.
+                            //This is an unvisited node, so we need to store it in the open list.
                             endNodeRecord.node = endNode;
                         }
                         endNodeRecord.costSoFar = endNodeCost;
                         endNodeRecord.connection = id;
                         if (indexInOpenList > -1)
                         {
-                            //Update statistics in the open list if the node was already there.
+                            //Update the statistics in the open list
                             openList[indexInOpenList] = endNodeRecord;
                         }
                         else
                         {
-                            //Add the node to the open list
+                            //Otherwise, add the new node to the open list.
                             openList.Add(endNodeRecord);
                         }
                     }
@@ -133,27 +130,23 @@ public class Dijkstra : MonoBehaviour
                 }
                 if(currentNode.node == goalNode)
                 {
+                    //We have found a path
                     finalPath = new List<int>();
                     string path = string.Format("{0}", goalNode);
-                    while (currentNode.node != startNode)
+                    while(currentNode.node != startNode)
                     {
                         finalPath.Add(currentNode.connection);
                         path = string.Format("{0} -> ", connections[currentNode.connection].from) + path;
                         int sourceNode = connections[currentNode.connection].from;
-                        for(int i = 0; i < closedList.Count; i++)
-                        {
-                            if (closedList[i].node == sourceNode)
-                            {
-                                currentNode = closedList[i];
-                                break;
-                            }
-                        }
+                        int indexInClosedList = Contains(closedList, sourceNode);
+                        currentNode = closedList[indexInClosedList];
                     }
                     pathfindingStatus = "Terminated, path: " + path;
                     foundPath = true;
                 }
                 else if(openList.Count == 0)
                 {
+                    //Search has failed. No paths found.
                     pathfindingStatus = "Terminated, no path!";
                 }
             }
@@ -172,6 +165,48 @@ public class Dijkstra : MonoBehaviour
                 currentNode.node = -1;
             }
         }
+    }
+
+    NodeRecord FindSmallestOpenNode()
+    {
+        int minNode = -1;
+        float minCost = float.MaxValue;
+        for(int i = 0; i < openList.Count; i++)
+        {
+            if(openList[i].costSoFar < minCost)
+            {
+                minCost = openList[i].costSoFar;
+                minNode = i;
+            }
+        }
+        NodeRecord result = openList[minNode];
+        openList.RemoveAt(minNode);
+        return result;
+    }
+
+    List<int> GetConnections(int from)
+    {
+        List<int> conns = new List<int>();
+        for(int c = 0; c < connections.Count; c++)
+        {
+            if(connections[c].from == from)
+            {
+                conns.Add(c);
+            }
+        }
+        return conns;
+    }
+
+    int Contains(List<NodeRecord> list, int node)
+    {
+        for(int i = 0; i < list.Count; i++)
+        {
+            if(list[i].node == node)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     void OnDrawGizmos()
@@ -246,45 +281,5 @@ public class Dijkstra : MonoBehaviour
             style.normal.textColor = c;
             Handles.Label(mid + rgt, string.Format("{0:0.0}", conn.cost), style);
         }
-    }
-
-    List<int> GetConnections(int from)
-    {
-        List<int> cons = new List<int>();
-        for(int c = 0; c < connections.Count; c++)
-        {
-            if (connections[c].from == from)
-                cons.Add(c);
-        }
-        return cons;
-    }
-
-    NodeRecord GetSmallestOpenNode()
-    {
-        int minNode = -1;
-        float minCost = float.MaxValue;
-        for(int i = 0; i < openList.Count; i++)
-        {
-            if(openList[i].costSoFar < minCost)
-            {
-                minCost = openList[i].costSoFar;
-                minNode = i;
-            }
-        }
-        NodeRecord result = openList[minNode];
-        openList.RemoveAt(minNode);
-        return result;
-    }
-
-    int Contains(List<NodeRecord> list, int node)
-    {
-        for(int i = 0; i < list.Count; i++)
-        {
-            if(list[i].node == node)
-            {
-                return i;
-            }
-        }
-        return -1;
     }
 }
