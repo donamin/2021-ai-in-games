@@ -76,8 +76,8 @@ public class AStar : MonoBehaviour
         startRecord.node = startNode;
         startRecord.connection = -1;
         startRecord.costSoFar = 0;
-        //ToDo: Set the estimated total cost of the start node simply to its heuristic value.
-        startRecord.estimatedTotalCost = 0;
+        //Set the estimated total cost of the start node simply to its heuristic value.
+        startRecord.estimatedTotalCost = Heuristic(startNode, goalNode);
         openList.Add(startRecord);
 
         closedList.Clear();
@@ -91,8 +91,10 @@ public class AStar : MonoBehaviour
 
     float Heuristic(int from, int to)
     {
-        //ToDo: Use Euclidean distance as the heuristic function
-        return 0;
+        return Vector3.Distance(nodes[from].transform.position, nodes[to].transform.position);
+        //return Mathf.Sqrt(Mathf.Pow(nodes[from].transform.position.x - nodes[to].transform.position.x, 2.0f)
+        //   + Mathf.Pow(nodes[from].transform.position.y - nodes[to].transform.position.y, 2.0f)
+        //    + Mathf.Pow(nodes[from].transform.position.z - nodes[to].transform.position.z, 2.0f));
     }
 
     // Update is called once per frame
@@ -126,8 +128,11 @@ public class AStar : MonoBehaviour
 
                         if (indexInClosedList != -1)
                         {
-                            //ToDo: The node is in the closed list. Check if we need to remove it from the closed list, and remove it if we do.
-                            continue;
+                            //The node is in the closed list.
+                            endNodeRecord = closedList[indexInClosedList];
+                            if (endNodeRecord.costSoFar <= endNodeCost)
+                                continue;
+                            closedList.Remove(endNodeRecord);
                         }
                         else if (indexInOpenList > -1)
                         {
@@ -143,8 +148,7 @@ public class AStar : MonoBehaviour
                         }
                         endNodeRecord.costSoFar = endNodeCost;
                         endNodeRecord.connection = connectionID;
-                        //ToDo: Compute the estimated total cost as the sum of (update) cost so far and the heuristic value
-                        endNodeRecord.estimatedTotalCost = endNodeCost;
+                        endNodeRecord.estimatedTotalCost = endNodeCost + endNodeHeuristic;
                         if (indexInOpenList > -1)
                         {
                             //Update the statistics in the open list
@@ -191,14 +195,13 @@ public class AStar : MonoBehaviour
 
     NodeRecord FindSmallestOpenNode()
     {
-        //ToDo: Edit this function such that it looks for the node with smallest estimated total cost, and not the smallset cost so far!
         int minNode = -1;
         float minCost = float.MaxValue;
         for (int i = 0; i < openList.Count; i++)
         {
-            if (openList[i].costSoFar < minCost)
+            if (openList[i].estimatedTotalCost < minCost)
             {
-                minCost = openList[i].costSoFar;
+                minCost = openList[i].estimatedTotalCost;
                 minNode = i;
             }
         }
