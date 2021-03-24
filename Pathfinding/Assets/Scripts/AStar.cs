@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Dijkstra : MonoBehaviour
+public class AStar : MonoBehaviour
 {
     class Connection
     {
@@ -20,7 +20,7 @@ public class Dijkstra : MonoBehaviour
     struct NodeRecord
     {
         public int node, connection;
-        public float costSoFar;
+        public float costSoFar, estimatedTotalCost;
     }
 
     public GameObject[] nodes;
@@ -76,6 +76,8 @@ public class Dijkstra : MonoBehaviour
         startRecord.node = startNode;
         startRecord.connection = -1;
         startRecord.costSoFar = 0;
+        //ToDo: Set the estimated total cost of the start node simply to its heuristic value.
+        startRecord.estimatedTotalCost = 0;
         openList.Add(startRecord);
 
         closedList.Clear();
@@ -85,6 +87,12 @@ public class Dijkstra : MonoBehaviour
         pathfindingStatus = "Initialized...";
 
         foundPath = false;
+    }
+
+    float Heuristic(int from, int to)
+    {
+        //ToDo: Use Euclidean distance as the heuristic function
+        return 0;
     }
 
     // Update is called once per frame
@@ -111,13 +119,14 @@ public class Dijkstra : MonoBehaviour
 
                         NodeRecord endNodeRecord;
                         float endNodeCost = currentNode.costSoFar + connections[connectionID].cost;
+                        float endNodeHeuristic = Heuristic(endNode, goalNode);
 
                         int indexInClosedList = Contains(closedList, endNode);
                         int indexInOpenList = Contains(openList, endNode);
 
                         if (indexInClosedList != -1)
                         {
-                            //Ignore if the node is in the closed list.
+                            //ToDo: The node is in the closed list. Check if we need to remove it from the closed list, and remove it if we do.
                             continue;
                         }
                         else if (indexInOpenList > -1)
@@ -134,6 +143,8 @@ public class Dijkstra : MonoBehaviour
                         }
                         endNodeRecord.costSoFar = endNodeCost;
                         endNodeRecord.connection = connectionID;
+                        //ToDo: Compute the estimated total cost as the sum of (update) cost so far and the heuristic value
+                        endNodeRecord.estimatedTotalCost = endNodeCost;
                         if (indexInOpenList > -1)
                         {
                             //Update the statistics in the open list
@@ -180,6 +191,7 @@ public class Dijkstra : MonoBehaviour
 
     NodeRecord FindSmallestOpenNode()
     {
+        //ToDo: Edit this function such that it looks for the node with smallest estimated total cost, and not the smallset cost so far!
         int minNode = -1;
         float minCost = float.MaxValue;
         for (int i = 0; i < openList.Count; i++)
@@ -236,10 +248,11 @@ public class Dijkstra : MonoBehaviour
         Handles.Label(new Vector3(0, labelY, 0), string.Format("Open list:"), style);
         for (int i = 0; i < openList.Count; i++)
         {
-            string openNodeStr = string.Format("    node: {0} (from: {1}, cost so far: {2:0.0})"
+            string openNodeStr = string.Format("    node: {0} (from: {1}, cost so far: {2:0.0}, estimatd total cost: {3:0.0})"
                 , openList[i].node
                 , openList[i].connection == -1 ? -1 : connections[openList[i].connection].from
-                , openList[i].costSoFar);
+                , openList[i].costSoFar
+                , openList[i].estimatedTotalCost);
             labelY -= yDist;
             Handles.Label(new Vector3(0, labelY, 0), openNodeStr, style);
         }
@@ -248,10 +261,11 @@ public class Dijkstra : MonoBehaviour
         Handles.Label(new Vector3(0, labelY, 0), string.Format("Closed list:"), style);
         for (int i = 0; i < closedList.Count; i++)
         {
-            string closedNodeStr = string.Format("    node: {0} (from: {1}, cost so far: {2:0.0})"
+            string closedNodeStr = string.Format("    node: {0} (from: {1}, cost so far: {2:0.0}, estimatd total cost: {3:0.0})"
                 , closedList[i].node
                 , closedList[i].connection == -1 ? -1 : connections[closedList[i].connection].from
-                , closedList[i].costSoFar);
+                , closedList[i].costSoFar
+                , closedList[i].estimatedTotalCost);
             labelY -= yDist;
             Handles.Label(new Vector3(0, labelY, 0), closedNodeStr, style);
         }
