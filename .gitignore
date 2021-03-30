@@ -18,6 +18,14 @@ Pathfinding/[Bb]uilds/
 Pathfinding/[Ll]ogs/
 Pathfinding/[Uu]ser[Ss]ettings/
 
+Waypoints/[Ll]ibrary/
+Waypoints/[Tt]emp/
+Waypoints/[Oo]bj/
+Waypoints/[Bb]uild/
+Waypoints/[Bb]uilds/
+Waypoints/[Ll]ogs/
+Waypoints/[Uu]ser[Ss]ettings/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 Top-Down-Shooter/[Mm]emoryCaptures/
