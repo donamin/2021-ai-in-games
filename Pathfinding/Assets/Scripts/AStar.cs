@@ -211,9 +211,9 @@ public class AStar : MonoBehaviour
         List<int> inputPath = new List<int>();
         List<int> outputPath = new List<int>();
 
-        //TODO: First, process edgePath array into inputPath array, such that it contains nodes instead of connections.
+        //TODO: YOUR CODE HERE (Q1): First, process edgePath array into inputPath array, such that it contains nodes instead of connections.
 
-        //TODO: Now comes the main smoothing algorithm
+        //TODO: YOUR CODE HERE (Q2): Now comes the main smoothing algorithm
 
         return outputPath;
     }
