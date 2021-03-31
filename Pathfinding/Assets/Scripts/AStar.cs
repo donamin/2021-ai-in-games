@@ -213,7 +213,7 @@ public class AStar : MonoBehaviour
 
         //TODO: YOUR CODE HERE (Q1): First, process edgePath array into inputPath array, such that it contains nodes instead of connections.
 
-        //TODO: YOUR CODE HERE (Q2): Now comes the main smoothing algorithm
+        //TODO: YOUR CODE HERE (Q2): Now comes the main smoothing algorithm, remember to fix the bug in the pseudocode!
 
         return outputPath;
     }
