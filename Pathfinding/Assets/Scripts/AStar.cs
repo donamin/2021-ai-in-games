@@ -35,8 +35,10 @@ public class AStar : MonoBehaviour
     List<NodeRecord> closedList = new List<NodeRecord>();
     NodeRecord currentNode;
     string pathfindingStatus = "Initialized...";
-    List<int> finalPath;
-    bool foundPath = false;
+    List<int> finalPath, finalPathSmoothed;
+    bool foundPath = false, smoothedPath = false;
+
+    public LayerMask obstacleMask;
 
     // Start is called before the first frame update
     void Start()
@@ -176,8 +178,10 @@ public class AStar : MonoBehaviour
                         int indexInClosedList = Contains(closedList, sourceNode);
                         currentNode = closedList[indexInClosedList];
                     }
+                    finalPath.Reverse();
                     pathfindingStatus = "Terminated, path: " + path;
                     foundPath = true;
+                    smoothedPath = false;
                 }
                 else if (openList.Count == 0)
                 {
@@ -187,10 +191,31 @@ public class AStar : MonoBehaviour
             }
             else
             {
-                //Reset the pathfinding process
-                InitializeSearch();
+                if (foundPath && !smoothedPath)
+                {
+                    //Smooth the final path
+                    finalPathSmoothed = SmoothPath(finalPath);
+                    smoothedPath = true;
+                }
+                else
+                {
+                    //Reset the pathfinding process
+                    InitializeSearch();
+                }
             }
         }
+    }
+
+    List<int> SmoothPath(List<int> edgePath)
+    {
+        List<int> inputPath = new List<int>();
+        List<int> outputPath = new List<int>();
+
+        //TODO: First, process edgePath array into inputPath array, such that it contains nodes instead of connections.
+
+        //TODO: Now comes the main smoothing algorithm
+
+        return outputPath;
     }
 
     NodeRecord FindSmallestOpenNode()
@@ -317,6 +342,13 @@ public class AStar : MonoBehaviour
             style.fontSize = 20;
             style.normal.textColor = c;
             Handles.Label(mid + rgt, string.Format("{0:0.0}", conn.cost), style);
+        }
+        if(foundPath && smoothedPath)
+        {
+            for(int i = 0; i < finalPathSmoothed.Count - 1; i++)
+            {
+                Debug.DrawLine(nodes[finalPathSmoothed[i]].transform.position, nodes[finalPathSmoothed[i + 1]].transform.position, Color.cyan);
+            }
         }
     }
 }

@@ -161,6 +161,7 @@ public class Dijkstra : MonoBehaviour
                         int indexInClosedList = Contains(closedList, sourceNode);
                         currentNode = closedList[indexInClosedList];
                     }
+                    finalPath.Reverse();
                     pathfindingStatus = "Terminated, path: " + path;
                     foundPath = true;
                 }
