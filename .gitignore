@@ -9,6 +9,7 @@ Top-Down-Shooter/[Bb]uild/
 Top-Down-Shooter/[Bb]uilds/
 Top-Down-Shooter/[Ll]ogs/
 Top-Down-Shooter/[Uu]ser[Ss]ettings/
+Top-Down-Shooter/.vs/
 
 Pathfinding/[Ll]ibrary/
 Pathfinding/[Tt]emp/
@@ -17,6 +18,7 @@ Pathfinding/[Bb]uild/
 Pathfinding/[Bb]uilds/
 Pathfinding/[Ll]ogs/
 Pathfinding/[Uu]ser[Ss]ettings/
+Pathfinding/.vs/
 
 Waypoints/[Ll]ibrary/
 Waypoints/[Tt]emp/
@@ -25,6 +27,16 @@ Waypoints/[Bb]uild/
 Waypoints/[Bb]uilds/
 Waypoints/[Ll]ogs/
 Waypoints/[Uu]ser[Ss]ettings/
+Waypoints/.vs/
+
+Navigation-Mesh/[Ll]ibrary/
+Navigation-Mesh/[Tt]emp/
+Navigation-Mesh/[Oo]bj/
+Navigation-Mesh/[Bb]uild/
+Navigation-Mesh/[Bb]uilds/
+Navigation-Mesh/[Ll]ogs/
+Navigation-Mesh/[Uu]ser[Ss]ettings/
+Navigation-Mesh/.vs/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
