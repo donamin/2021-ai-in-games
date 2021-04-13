@@ -38,6 +38,15 @@ Navigation-Mesh/[Ll]ogs/
 Navigation-Mesh/[Uu]ser[Ss]ettings/
 Navigation-Mesh/.vs/
 
+FlappyBird/[Ll]ibrary/
+FlappyBird/[Tt]emp/
+FlappyBird/[Oo]bj/
+FlappyBird/[Bb]uild/
+FlappyBird/[Bb]uilds/
+FlappyBird/[Ll]ogs/
+FlappyBird/[Uu]ser[Ss]ettings/
+FlappyBird/.vs/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 Top-Down-Shooter/[Mm]emoryCaptures/
