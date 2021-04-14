@@ -71,7 +71,7 @@ public class Agent_GA : Agent
         //print(populations[popIndex][eliteIndex]);
         //Now extract first action from populations[popIndex][eliteIndex]
         lastBestChromosome = populations[popIndex][eliteIndex];
-        int actionIdx = populations[popIndex][eliteIndex][0] == '0' ? 0 : 1;
+        int actionIdx = lastBestChromosome[0] == '0' ? 0 : 1;
         return (Action)(actionIdx);
     }
 
