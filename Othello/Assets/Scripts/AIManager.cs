@@ -110,7 +110,6 @@ public class AIManager : MonoBehaviour {
 		return computerMove;
 	}
 
-
 	private MonteCarloNode TreePolicy(MonteCarloNode n)
 	{
 		MonteCarloNode v = n;
@@ -122,14 +121,10 @@ public class AIManager : MonoBehaviour {
 			{
 				return v.Expand();
 			}
-			else
-			{
-				v = v.BestChild();
-			}
+			v = v.BestChild();
 		}
 		return v;
 	}
-
 
 	public int Simulate(MonteCarloNode node)
 	{
@@ -139,7 +134,7 @@ public class AIManager : MonoBehaviour {
 		board.GenerateAvailableMoves();
 		while (board.availableMoves.Count != 0) {
 			List<Point> moves = board.availableMoves.Keys.ToList();
-			int i = UnityEngine.Random.Range(0,moves.Count - 1);
+			int i = UnityEngine.Random.Range(0, moves.Count);
 
 			//List<Point> p = new List<Point>();W
 

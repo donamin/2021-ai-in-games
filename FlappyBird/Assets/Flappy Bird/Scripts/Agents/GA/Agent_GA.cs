@@ -20,6 +20,9 @@ public class Agent_GA : Agent
     static WorldState currentState;
     static List<Vector3> birdPosList;
 
+    //TODO: Your code here (Q2): Set this flag to true in order to use the 2X site corssover operator of task 2 (you need to implement it below).
+    const bool USE_2XSITE_CROSSOVER = false;
+
     private void Start()
     {
         //_ = this;
@@ -54,7 +57,7 @@ public class Agent_GA : Agent
         }
         if (lastBestChromosome != "")
         {
-            //Add the shifted version of last best chromosome.
+            //TODO: Your code here (Q1): Overwrite populations[popIndex][0] with the shifted version of last best chromosome.
         }
 
         for (int g = 1; g <= numGenerations; g++)
@@ -186,11 +189,18 @@ public class Agent_GA : Agent
             if (Random.Range(0.0f, 1.0f) <= probCrossOver)
             {
                 string c = "", d = "";
-                int xsite = Random.Range(0, sizeChromosome - 1);
-                for (int j = 0; j < sizeChromosome; j++)
+                if (USE_2XSITE_CROSSOVER)
                 {
-                    c += j <= xsite ? a[j] : b[j];
-                    d += j <= xsite ? b[j] : a[j];
+                    //TODO: Your code here (Q2): Implement the 2x site crossover opperation shown in slide #9.
+                }
+                else
+                {
+                    int xsite = Random.Range(0, sizeChromosome - 1);
+                    for (int j = 0; j < sizeChromosome; j++)
+                    {
+                        c += j <= xsite ? a[j] : b[j];
+                        d += j <= xsite ? b[j] : a[j];
+                    }
                 }
                 populations[1 - popIndex].Add(c);
                 populations[1 - popIndex].Add(d);
@@ -205,15 +215,15 @@ public class Agent_GA : Agent
 
     void Mutation()
     {
-        if(Random.Range(0.0f, 1.0f) < probMutation)
+        if (Random.Range(0.0f, 1.0f) < probMutation)
         {
             int idx = Random.Range(0, sizeGeneration);
             int mutIdx = Random.Range(0, sizeChromosome);
             string s = populations[1 - popIndex][idx];
             populations[1 - popIndex][idx] = "";
-            for(int i = 0; i < sizeChromosome; i++)
+            for (int i = 0; i < sizeChromosome; i++)
             {
-                if(i == mutIdx)
+                if (i == mutIdx)
                     populations[1 - popIndex][idx] += s[i] == '0' ? '1' : '0';
                 else
                     populations[1 - popIndex][idx] += s[i];
