@@ -47,6 +47,15 @@ FlappyBird/[Ll]ogs/
 FlappyBird/[Uu]ser[Ss]ettings/
 FlappyBird/.vs/
 
+Othello/[Ll]ibrary/
+Othello/[Tt]emp/
+Othello/[Oo]bj/
+Othello/[Bb]uild/
+Othello/[Bb]uilds/
+Othello/[Ll]ogs/
+Othello/[Uu]ser[Ss]ettings/
+Othello/.vs/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 Top-Down-Shooter/[Mm]emoryCaptures/
