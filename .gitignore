@@ -56,6 +56,15 @@ Othello/[Ll]ogs/
 Othello/[Uu]ser[Ss]ettings/
 Othello/.vs/
 
+Mathematics/[Ll]ibrary/
+Mathematics/[Tt]emp/
+Mathematics/[Oo]bj/
+Mathematics/[Bb]uild/
+Mathematics/[Bb]uilds/
+Mathematics/[Ll]ogs/
+Mathematics/[Uu]ser[Ss]ettings/
+Mathematics/.vs/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 Top-Down-Shooter/[Mm]emoryCaptures/
