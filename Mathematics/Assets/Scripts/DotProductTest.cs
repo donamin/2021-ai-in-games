@@ -24,5 +24,12 @@ public class DotProductTest : MonoBehaviour
         if (Vector3.Dot(b, transform.right) < 0)
             angle *= -1;
         print(angle);
+        Debug.DrawLine(transform.position, transform.position + transform.forward * 25, Color.green);
+        Debug.DrawLine(transform.position, transform.position + transform.up * 25, Color.red);
+        Vector3 right = -Vector3.Cross(transform.forward, transform.up);
+        //Vector3 right = Vector3.Cross(transform.up, transform.forward);
+        Debug.DrawLine(transform.position, transform.position + right * 25, Color.blue);
+
+        
     }
 }
