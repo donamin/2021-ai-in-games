@@ -23,13 +23,15 @@ public class DotProductTest : MonoBehaviour
         float angle = Mathf.Acos(dot / (a.magnitude * b.magnitude)) * Mathf.Rad2Deg;
         if (Vector3.Dot(b, transform.right) < 0)
             angle *= -1;
-        print(angle);
+        //print(angle);
         Debug.DrawLine(transform.position, transform.position + transform.forward * 25, Color.green);
         Debug.DrawLine(transform.position, transform.position + transform.up * 25, Color.red);
         Vector3 right = -Vector3.Cross(transform.forward, transform.up);
         //Vector3 right = Vector3.Cross(transform.up, transform.forward);
         Debug.DrawLine(transform.position, transform.position + right * 25, Color.blue);
 
-        
+        //TODO: Your code here (Q2): Write an if statement for printing an attack message when
+        //the (absolute value) of the angle is less than 45 degrees and
+        //the distance to the enemy is less than 40
     }
 }

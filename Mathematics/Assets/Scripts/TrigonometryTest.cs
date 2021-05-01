@@ -14,6 +14,6 @@ public class TrigonometryTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(scale * Mathf.Sin(speed * Time.time), transform.position.y, transform.position.z);
+        //TODO: Your code here (Q3): Change the z coordinate of the object such that its path resembles the mathematical infinite symbol!
     }
 }
