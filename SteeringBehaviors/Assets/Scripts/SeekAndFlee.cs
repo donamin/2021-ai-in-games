@@ -14,7 +14,19 @@ public class SeekAndFlee : BaseSteeringBehavior
         steering.linear = Vector3.zero;
         steering.angular = 0;
 
-        //ToDo
+        if(target)
+        {
+            if(flee)
+                steering.linear = transform.position - target.transform.position;
+            else
+                steering.linear = target.transform.position - transform.position;
+
+            steering.linear.y = 0;
+            steering.linear.Normalize();
+            steering.linear *= maxAcceleration;
+
+            steering.angular = 0;
+        }
 
         return steering;
     }

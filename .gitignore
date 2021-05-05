@@ -65,6 +65,15 @@ Mathematics/[Ll]ogs/
 Mathematics/[Uu]ser[Ss]ettings/
 Mathematics/.vs/
 
+SteeringBehaviors/[Ll]ibrary/
+SteeringBehaviors/[Tt]emp/
+SteeringBehaviors/[Oo]bj/
+SteeringBehaviors/[Bb]uild/
+SteeringBehaviors/[Bb]uilds/
+SteeringBehaviors/[Ll]ogs/
+SteeringBehaviors/[Uu]ser[Ss]ettings/
+SteeringBehaviors/.vs/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 Top-Down-Shooter/[Mm]emoryCaptures/
