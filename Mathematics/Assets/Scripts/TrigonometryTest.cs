@@ -15,5 +15,6 @@ public class TrigonometryTest : MonoBehaviour
     void Update()
     {
         //TODO: Your code here (Q3): Change the z coordinate of the object such that its path resembles the mathematical infinite symbol!
+        transform.position = new Vector3(scale * Mathf.Sin(speed * Time.time), transform.position.y, transform.position.z);
     }
 }
